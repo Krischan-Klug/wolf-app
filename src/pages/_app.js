@@ -4,7 +4,7 @@ import LoginForm from "@/components/LoginForm";
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     async function fetchSession() {
@@ -13,13 +13,13 @@ export default function App({ Component, pageProps }) {
         const data = await res.json();
         setUser(data.user);
       }
-      setLoading(false);
+      setAuthenticated(true);
     }
     fetchSession();
   }, []);
 
-  if (loading) {
-    return <div>Lade...</div>;
+  if (!authenticated) {
+    return <div>Authentifizierung...</div>;
   }
 
   if (user) {
