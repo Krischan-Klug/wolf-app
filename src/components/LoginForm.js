@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 
-export default function Login() {
+export default function LoginForm({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -14,8 +12,15 @@ export default function Login() {
       body: JSON.stringify({ username, password }),
     });
 
-    if (res.ok) router.push("/");
-    else alert("Login fehlgeschlagen");
+    if (res.ok) {
+      const sessionRes = await fetch("/api/auth/me");
+      if (sessionRes.ok) {
+        const data = await sessionRes.json();
+        onLoginSuccess(data.user); // <-- Benutzer an App weitergeben
+      }
+    } else {
+      alert("Login fehlgeschlagen");
+    }
   }
 
   return (
