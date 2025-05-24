@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/globals.css";
+import Login from "@/components/Login";
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
@@ -19,7 +20,9 @@ export default function App({ Component, pageProps }) {
     console.log(user);
   }, [user]);
 
-  if (!user) return null;
+  if (!user) {
+    return <Login />;
+  }
 
   if (user) {
     return <Component {...pageProps} />;
