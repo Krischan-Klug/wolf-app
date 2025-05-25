@@ -1,4 +1,21 @@
 import { useState } from "react";
+import styled from "styled-components";
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 10vh;
+`;
+
+const StyledMainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+`;
 
 export default function LoginForm({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -24,19 +41,21 @@ export default function LoginForm({ onLoginSuccess }) {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        placeholder="Benutzername"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        placeholder="Passwort"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <StyledMainWrapper>
+      <StyledForm onSubmit={handleLogin}>
+        <input
+          placeholder="Benutzername"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          placeholder="Passwort"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+      </StyledForm>
+    </StyledMainWrapper>
   );
 }

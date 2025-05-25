@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import LoginForm from "@/components/LoginForm";
 
+import Footer from "@/components/Footer";
+
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
@@ -27,7 +29,12 @@ export default function App({ Component, pageProps }) {
   }
 
   if (user) {
-    return <Component {...pageProps} />;
+    return (
+      <>
+        <Component {...pageProps} />
+        <Footer />
+      </>
+    );
   } else {
     return <LoginForm onLoginSuccess={(user) => setUser(user)} />;
   }

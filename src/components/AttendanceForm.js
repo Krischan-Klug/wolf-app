@@ -1,5 +1,13 @@
-// components/AttendanceForm.js
 import { useState } from "react";
+import styled from "styled-components";
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 20vh;
+`;
 
 export default function AttendanceForm() {
   const [status, setStatus] = useState("anwesend");
@@ -20,8 +28,8 @@ export default function AttendanceForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <>
+      <StyledForm onSubmit={handleSubmit}>
         <label>
           <input
             type="radio"
@@ -32,7 +40,7 @@ export default function AttendanceForm() {
           />
           Anwesend
         </label>
-        <label className="ml-4">
+        <label>
           <input
             type="radio"
             name="status"
@@ -42,29 +50,23 @@ export default function AttendanceForm() {
           />
           Abwesend
         </label>
-      </div>
 
-      {status === "abwesend" && (
-        <div>
-          <label>Grund der Abwesenheit:</label>
-          <textarea
-            className="w-full border p-2"
-            rows={3}
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            required
-          />
-        </div>
-      )}
+        {status === "abwesend" && (
+          <div>
+            <textarea
+              rows={3}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Grund fürs fotzen"
+              required
+            />
+          </div>
+        )}
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-blue-600 text-white rounded"
-      >
-        Eintragen
-      </button>
+        <button type="submit">Eintragen</button>
 
-      {message && <p className="mt-2 text-sm">{message}</p>}
-    </form>
+        {message && <p>{message}</p>}
+      </StyledForm>
+    </>
   );
 }
