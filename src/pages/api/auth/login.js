@@ -15,9 +15,9 @@ export default async function handler(req, res) {
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid)
     return res.status(401).json({ error: "Ungültige Anmeldedaten" });
-
+  //Übergabe an Token
   const token = jwt.sign(
-    { username: user.username, isAdmin: user.isAdmin },
+    { username: user.username, privileges: user.privileges },
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );

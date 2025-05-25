@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { username, password, secret, isAdmin } = req.body;
+  const { username, password, secret, privileges } = req.body;
 
   if (secret !== process.env.ADMIN_SECRET) {
     return res.status(403).json({ error: "Nicht autorisiert" });
@@ -24,7 +24,11 @@ export default async function handler(req, res) {
     const newUser = new User({
       username,
       password: hashedPassword,
-      isAdmin: !!isAdmin,
+      privileges: {
+        admin: !!privileges?.admin,
+        moderator: !!privileges?.moderator,
+        guest: !!privileges?.guest,
+      },
     });
 
     await newUser.save();

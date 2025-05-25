@@ -1,21 +1,47 @@
 import { useState } from "react";
 
+// Die Privilegien-Struktur definieren – sollte mit dem Schema übereinstimmen
+const AVAILABLE_PRIVILEGES = ["admin", "moderator", "guest"];
+
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [privileges, setPrivileges] = useState({
+    admin: false,
+    moderator: false,
+    guest: true, // default z. B. für Selbstregistrierung
+  });
+
+  function togglePrivilege(role) {
+    setPrivileges((prev) => ({
+      ...prev,
+      [role]: !prev[role],
+    }));
+  }
 
   async function handleRegister(e) {
     e.preventDefault();
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, secret, isAdmin }),
+      body: JSON.stringify({ username, password, secret, privileges }),
     });
 
-    if (res.ok) alert("Benutzer erstellt");
-    else alert("Fehlgeschlagen");
+    if (res.ok) {
+      alert("Benutzer erstellt");
+      // Optionale Rücksetzung:
+      setUsername("");
+      setPassword("");
+      setSecret("");
+      setPrivileges({
+        admin: false,
+        moderator: false,
+        guest: true,
+      });
+    } else {
+      alert("Fehlgeschlagen");
+    }
   }
 
   return (
@@ -36,14 +62,21 @@ export default function RegisterPage() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <label>
-        <input
-          type="checkbox"
-          checked={isAdmin}
-          onChange={(e) => setIsAdmin(e.target.checked)}
-        />
-        Adminrechte
-      </label>
+
+      <fieldset>
+        <legend>Privilegien</legend>
+        {AVAILABLE_PRIVILEGES.map((role) => (
+          <label key={role} style={{ display: "block" }}>
+            <input
+              type="checkbox"
+              checked={privileges[role] || false}
+              onChange={() => togglePrivilege(role)}
+            />
+            {role.charAt(0).toUpperCase() + role.slice(1)}
+          </label>
+        ))}
+      </fieldset>
+
       <button type="submit">Benutzer erstellen</button>
     </form>
   );
