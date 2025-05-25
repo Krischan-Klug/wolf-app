@@ -18,6 +18,10 @@ export default function App({ Component, pageProps }) {
     fetchSession();
   }, []);
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   if (!authenticated) {
     return <div>Authentifizierung...</div>;
   }

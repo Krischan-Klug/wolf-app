@@ -4,13 +4,14 @@ export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   async function handleRegister(e) {
     e.preventDefault();
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, secret }),
+      body: JSON.stringify({ username, password, secret, isAdmin }),
     });
 
     if (res.ok) alert("Benutzer erstellt");
@@ -35,6 +36,14 @@ export default function RegisterPage() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <label>
+        <input
+          type="checkbox"
+          checked={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.checked)}
+        />
+        Adminrechte
+      </label>
       <button type="submit">Benutzer erstellen</button>
     </form>
   );

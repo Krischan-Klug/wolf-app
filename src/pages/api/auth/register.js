@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { username, password, secret } = req.body;
+  const { username, password, secret, isAdmin } = req.body;
   if (secret !== process.env.ADMIN_SECRET) {
     return res.status(403).json({ error: "Nicht autorisiert" });
   }
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   const hashedPassword = await bcrypt.hash(password, 10);
   await db
     .collection("users")
-    .insertOne({ username, password: hashedPassword });
+    .insertOne({ username, password: hashedPassword, isAdmin });
 
   res.status(201).json({ message: "Benutzer erstellt" });
 }

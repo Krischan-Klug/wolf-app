@@ -16,9 +16,11 @@ export default async function handler(req, res) {
   if (!isValid)
     return res.status(401).json({ error: "Ungültige Anmeldedaten" });
 
-  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { username: user.username, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
 
   res.setHeader(
     "Set-Cookie",
