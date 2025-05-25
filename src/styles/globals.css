@@ -1,19 +1,13 @@
-* {
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
   min-height: 100vh;
   font-family: sans-serif;
   background-color: #f8f9fa;
-  overflow-y: scroll;
 }
 
-#__next {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+button {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 5px 10px;
 }
