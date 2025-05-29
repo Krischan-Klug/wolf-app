@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { getTokenFromRequest } from "@/lib/auth";
 
 const StyledForm = styled.form`
   display: flex;
@@ -18,7 +19,7 @@ const StyledContentWrapper = styled.div`
 
 const AVAILABLE_PRIVILEGES = ["admin", "moderator", "guest"];
 
-export default function RegisterPage() {
+export default function RegisterPage({ user }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
@@ -58,47 +59,51 @@ export default function RegisterPage() {
     }
   }
 
+  if (user.privileges.admin) {
+    return (
+      <StyledContentWrapper>
+        <StyledForm onSubmit={handleRegister}>
+          <input
+            placeholder="Benutzername"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <br />
+          <input
+            placeholder="Passwort"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <br />
+          <fieldset>
+            <legend>Privilegien</legend>
+            {AVAILABLE_PRIVILEGES.map((role) => (
+              <label key={role} style={{ display: "block" }}>
+                <input
+                  type="checkbox"
+                  checked={privileges[role] || false}
+                  onChange={() => togglePrivilege(role)}
+                />
+                {role.charAt(0).toUpperCase() + role.slice(1)}
+              </label>
+            ))}
+          </fieldset>
+          <br />
+          <input
+            placeholder="Admin Secret"
+            value={secret}
+            onChange={(e) => setSecret(e.target.value)}
+          />
+          <br />
+          <button type="submit">Benutzer erstellen</button>
+        </StyledForm>
+      </StyledContentWrapper>
+    );
+  }
   return (
-    <StyledContentWrapper>
-      <StyledForm onSubmit={handleRegister}>
-        <input
-          placeholder="Benutzername"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
-        <input
-          placeholder="Passwort"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-
-        <fieldset>
-          <legend>Privilegien</legend>
-          {AVAILABLE_PRIVILEGES.map((role) => (
-            <label key={role} style={{ display: "block" }}>
-              <input
-                type="checkbox"
-                checked={privileges[role] || false}
-                onChange={() => togglePrivilege(role)}
-              />
-              {role.charAt(0).toUpperCase() + role.slice(1)}
-            </label>
-          ))}
-        </fieldset>
-
-        <br />
-
-        <input
-          placeholder="Admin Secret"
-          value={secret}
-          onChange={(e) => setSecret(e.target.value)}
-        />
-        <br />
-        <button type="submit">Benutzer erstellen</button>
-      </StyledForm>
-    </StyledContentWrapper>
+    <>
+      <p>Nicht autorisiert</p>
+    </>
   );
 }

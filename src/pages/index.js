@@ -1,6 +1,7 @@
 import AttendanceForm from "@/components/AttendanceForm";
 import LogoutButton from "@/components/LogoutButton";
 import { useRouter } from "next/router";
+import AdminMenu from "@/components/AdminMenu";
 
 import styled from "styled-components";
 
@@ -20,16 +21,16 @@ const StyledMenu = styled.div`
   width: 100%;
 `;
 
-export default function Home() {
+export default function Home({ user }) {
   const router = useRouter();
   return (
     <StyledContentWrapper>
       <h1>HOME</h1>
       <AttendanceForm />
       <StyledMenu>
-        <button onClick={() => router.push("/register")}>REGISTER</button>
         <LogoutButton />
       </StyledMenu>
+      {user.privileges.admin && <AdminMenu />}
     </StyledContentWrapper>
   );
 }

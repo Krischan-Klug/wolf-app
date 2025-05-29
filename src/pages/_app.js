@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
   if (user) {
     return (
       <>
-        <Component {...pageProps} />
+        <Component {...pageProps} user={user} />
         <Footer />
       </>
     );
