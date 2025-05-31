@@ -2,16 +2,7 @@ import AttendanceForm from "@/components/AttendanceForm";
 import LogoutButton from "@/components/LogoutButton";
 import { useRouter } from "next/router";
 import AdminMenu from "@/components/AdminMenu";
-
 import styled from "styled-components";
-
-const StyledContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 90vh;
-`;
 
 const StyledMenu = styled.div`
   display: flex;
@@ -24,13 +15,13 @@ const StyledMenu = styled.div`
 export default function Home({ user }) {
   const router = useRouter();
   return (
-    <StyledContentWrapper>
+    <main>
       <h1>HOME</h1>
       <AttendanceForm />
       <StyledMenu>
         <LogoutButton />
       </StyledMenu>
       {user.privileges.admin && <AdminMenu />}
-    </StyledContentWrapper>
+    </main>
   );
 }

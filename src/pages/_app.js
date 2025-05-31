@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
 import "../styles/globals.css";
+import { useEffect, useState } from "react";
 import LoginForm from "@/components/LoginForm";
 
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }) {
   if (user) {
     return (
       <>
+        <Header />
         <Component {...pageProps} user={user} />
         <Footer />
       </>
