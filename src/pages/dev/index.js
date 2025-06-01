@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-export default function Dev() {
-  const router = useRouter({ user });
+export default function Dev({ user }) {
+  const router = useRouter();
   if (user?.privileges?.dev) {
     return (
       <main>
