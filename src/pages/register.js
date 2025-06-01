@@ -9,8 +9,6 @@ const StyledForm = styled.form`
   justify-content: space-evenly;
 `;
 
-const AVAILABLE_PRIVILEGES = ["admin", "moderator", "guest"];
-
 export default function RegisterPage({ user }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
