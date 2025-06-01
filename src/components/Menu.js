@@ -122,15 +122,27 @@ export default function Menu({ user }) {
           <StyledMenuButton onClick={() => handleLogout()}>
             Logout
           </StyledMenuButton>
-          {user?.privileges?.admin && (
+          {user.privileges.admin && (
             <StyledMenuButton
               onClick={() => {
                 closeMenu();
                 router.push("/admin");
               }}
-              style={{ color: "red", paddingTop: "10px" }}
+              style={{ color: "red" }}
             >
               Admin
+            </StyledMenuButton>
+          )}
+
+          {user.privileges.dev && (
+            <StyledMenuButton
+              onClick={() => {
+                closeMenu();
+                router.push("/dev");
+              }}
+              style={{ color: "red" }}
+            >
+              Dev
             </StyledMenuButton>
           )}
         </Overlay>

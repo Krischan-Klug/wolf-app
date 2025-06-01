@@ -33,14 +33,14 @@ export default function UpdatePrivilegesPage({ user }) {
     return (
       <main>
         <StyledForm onSubmit={handleUpdate}>
-          <h2>Benutzer-Prüfung & -Aktualisierung</h2>
+          <h2>Priviligien aktualisieren</h2>
           <input
             placeholder="Admin Secret"
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
           />
           <br />
-          <button type="submit">Alle User-Priviligien aktualisieren</button>
+          <button type="submit">User-Priviligien aktualisieren</button>
           {status && <p>{status}</p>}
         </StyledForm>
       </main>
