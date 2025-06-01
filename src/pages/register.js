@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { privilegesShema } from "@/lib/structureShemas";
+import { privilegesShema } from "@/lib/structureSchemas";
 
 const StyledForm = styled.form`
   display: flex;

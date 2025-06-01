@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { privilegesShema } from "@/lib/structureShemas.js";
+import { privilegesShema } from "@/lib/structureSchemas.js";
 
 const privilegesFields = {};
 privilegesShema.forEach((privilege) => {
