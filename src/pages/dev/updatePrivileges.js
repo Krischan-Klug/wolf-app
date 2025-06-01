@@ -15,7 +15,7 @@ export default function UpdatePrivilegesPage({ user }) {
   async function handleUpdate(e) {
     e.preventDefault();
 
-    const res = await fetch("/api/auth/updateUserPrivileges", {
+    const res = await fetch("/api/users/updateUserPrivileges", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ secret }),
