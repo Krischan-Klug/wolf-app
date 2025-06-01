@@ -8,6 +8,13 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   height: 10vh;
+  background-color: var(--color-bg);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
 `;
 
 const StyledHeaderIcons = styled.div`

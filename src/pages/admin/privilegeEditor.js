@@ -1,111 +1,163 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  max-width: 500px;
+const Wrapper = styled.main`
+  padding: 10vh 2rem;
+  padding-bottom: 0vh;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 2rem;
 `;
 
-const SearchRow = styled.div`
+const UserCard = styled.div`
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #111;
+  color: #eee;
+`;
+
+const PrivilegeGrid = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 `;
 
-const Input = styled.input`
-  flex: 1;
-  padding: 0.5rem;
-`;
-
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-`;
-
-const UserList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const PrivilegeList = styled.div`
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const CheckboxRow = styled.label`
+const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 `;
 
-export default function PrivilegeEditor() {
-  const [search, setSearch] = useState("");
+const SearchWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const SearchInput = styled.input`
+  flex: 1;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #666;
+  background: #222;
+  color: #fff;
+`;
+
+const SearchButton = styled.button`
+  border-radius: 8px;
+  background: #444;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: #666;
+  }
+`;
+
+const SecretInput = styled.input`
+  width: 100%;
+  padding: 0.6rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border: 1px solid #999;
+  background: #1c1c1c;
+  color: #eee;
+`;
+
+const StatusText = styled.p`
+  margin-top: 0.5rem;
+  color: ${({ success }) => (success ? "#0f0" : "#f44")};
+`;
+
+export default function PrivilegeManager() {
   const [users, setUsers] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [secret, setSecret] = useState("");
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
 
   const fetchUsers = async () => {
-    const res = await fetch(`/api/users?search=${search}`);
+    const query = search.trim();
+    const res = await fetch(`/api/users?search=${query}`);
     const data = await res.json();
     setUsers(data);
   };
 
-  const togglePrivilege = async (key) => {
-    const updated = {
-      ...selected.privileges,
-      [key]: !selected.privileges[key],
-    };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchUsers();
+  };
 
-    const res = await fetch(`/api/users/${selected._id}/privileges`, {
+  const handlePrivilegeChange = (userIndex, key) => {
+    const updatedUsers = [...users];
+    updatedUsers[userIndex].privileges[key] =
+      !updatedUsers[userIndex].privileges[key];
+    setUsers(updatedUsers);
+  };
+
+  const savePrivileges = async (userId, privileges) => {
+    setStatus("");
+    const res = await fetch(`/api/users/${userId}/privileges`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ privileges: updated }),
+      body: JSON.stringify({ privileges, secret }),
     });
 
-    const data = await res.json();
-    setSelected(data);
+    const result = await res.json();
+    if (res.ok) {
+      setStatus(`✅ ${result.message}`);
+    } else {
+      setStatus(`❌ ${result.error || "Fehler"}`);
+    }
   };
 
   return (
     <Wrapper>
-      <h2>Benutzerrechte bearbeiten</h2>
-      <SearchRow>
-        <Input
-          type="text"
-          placeholder="Benutzername"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <Button onClick={fetchUsers}>Suchen</Button>
-      </SearchRow>
+      <h2>🛠 Benutzerrechte verwalten</h2>
 
-      <UserList>
-        {users.map((user) => (
-          <li key={user._id}>
-            <Button onClick={() => setSelected(user)}>{user.username}</Button>
-          </li>
-        ))}
-      </UserList>
+      <SecretInput
+        type="password"
+        placeholder="Admin Secret"
+        value={secret}
+        onChange={(e) => setSecret(e.target.value)}
+      />
 
-      {selected && (
-        <PrivilegeList>
-          <h3>Privilegien für {selected.username}</h3>
-          {Object.entries(selected.privileges).map(([key, val]) => (
-            <CheckboxRow key={key}>
-              <input
-                type="checkbox"
-                checked={val}
-                onChange={() => togglePrivilege(key)}
-              />
-              {key}
-            </CheckboxRow>
-          ))}
-        </PrivilegeList>
+      <form onSubmit={handleSearch}>
+        <SearchWrapper>
+          <SearchInput
+            placeholder="Benutzer suchen..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <SearchButton type="submit">Suchen</SearchButton>
+        </SearchWrapper>
+      </form>
+
+      {users.map((user, i) => (
+        <UserCard key={user._id}>
+          <h3>{user.username}</h3>
+          <PrivilegeGrid>
+            {Object.keys(user.privileges).map((key) => (
+              <CheckboxLabel key={key}>
+                <input
+                  type="checkbox"
+                  checked={user.privileges[key]}
+                  onChange={() => handlePrivilegeChange(i, key)}
+                />
+                {key}
+              </CheckboxLabel>
+            ))}
+          </PrivilegeGrid>
+          <button onClick={() => savePrivileges(user._id, user.privileges)}>
+            Speichern
+          </button>
+        </UserCard>
+      ))}
+
+      {status && (
+        <StatusText success={status.startsWith("✅")}>{status}</StatusText>
       )}
     </Wrapper>
   );
