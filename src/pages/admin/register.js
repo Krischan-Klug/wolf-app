@@ -87,9 +87,5 @@ export default function RegisterPage({ user }) {
       </main>
     );
   }
-  return (
-    <>
-      <p>Nicht autorisiert</p>
-    </>
-  );
+  return <p>Nicht autorisiert</p>;
 }

@@ -72,7 +72,7 @@ const StatusText = styled.p`
   color: ${({ success }) => (success ? "#0f0" : "#f44")};
 `;
 
-export default function PrivilegeManager() {
+export default function PrivilegeManager({ user }) {
   const [users, setUsers] = useState([]);
   const [secret, setSecret] = useState("");
   const [search, setSearch] = useState("");
@@ -112,53 +112,55 @@ export default function PrivilegeManager() {
       setStatus(`❌ ${result.error || "Fehler"}`);
     }
   };
+  if (user.privileges.admin) {
+    return (
+      <Wrapper>
+        <h2>🛠 Benutzerrechte verwalten</h2>
 
-  return (
-    <Wrapper>
-      <h2>🛠 Benutzerrechte verwalten</h2>
+        <SecretInput
+          type="password"
+          placeholder="Admin Secret"
+          value={secret}
+          onChange={(e) => setSecret(e.target.value)}
+        />
 
-      <SecretInput
-        type="password"
-        placeholder="Admin Secret"
-        value={secret}
-        onChange={(e) => setSecret(e.target.value)}
-      />
+        <form onSubmit={handleSearch}>
+          <SearchWrapper>
+            <SearchInput
+              placeholder="Benutzer suchen..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <SearchButton type="submit">Suchen</SearchButton>
+          </SearchWrapper>
+        </form>
 
-      <form onSubmit={handleSearch}>
-        <SearchWrapper>
-          <SearchInput
-            placeholder="Benutzer suchen..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <SearchButton type="submit">Suchen</SearchButton>
-        </SearchWrapper>
-      </form>
+        {users.map((user, i) => (
+          <UserCard key={user._id}>
+            <h3>{user.username}</h3>
+            <PrivilegeGrid>
+              {Object.keys(user.privileges).map((key) => (
+                <CheckboxLabel key={key}>
+                  <input
+                    type="checkbox"
+                    checked={user.privileges[key]}
+                    onChange={() => handlePrivilegeChange(i, key)}
+                  />
+                  {key}
+                </CheckboxLabel>
+              ))}
+            </PrivilegeGrid>
+            <button onClick={() => savePrivileges(user._id, user.privileges)}>
+              Speichern
+            </button>
+          </UserCard>
+        ))}
 
-      {users.map((user, i) => (
-        <UserCard key={user._id}>
-          <h3>{user.username}</h3>
-          <PrivilegeGrid>
-            {Object.keys(user.privileges).map((key) => (
-              <CheckboxLabel key={key}>
-                <input
-                  type="checkbox"
-                  checked={user.privileges[key]}
-                  onChange={() => handlePrivilegeChange(i, key)}
-                />
-                {key}
-              </CheckboxLabel>
-            ))}
-          </PrivilegeGrid>
-          <button onClick={() => savePrivileges(user._id, user.privileges)}>
-            Speichern
-          </button>
-        </UserCard>
-      ))}
-
-      {status && (
-        <StatusText success={status.startsWith("✅")}>{status}</StatusText>
-      )}
-    </Wrapper>
-  );
+        {status && (
+          <StatusText success={status.startsWith("✅")}>{status}</StatusText>
+        )}
+      </Wrapper>
+    );
+  }
+  return <p>Nicht autorisiert</p>;
 }

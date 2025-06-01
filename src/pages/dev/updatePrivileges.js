@@ -47,5 +47,5 @@ export default function UpdatePrivilegesPage({ user }) {
     );
   }
 
-  return <p>❌ Nicht autorisiert</p>;
+  return <p>Nicht autorisiert</p>;
 }
