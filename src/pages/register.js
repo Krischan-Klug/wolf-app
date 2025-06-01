@@ -1,20 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { getTokenFromRequest } from "@/lib/auth";
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-`;
-
-const StyledContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 90vh;
 `;
 
 const AVAILABLE_PRIVILEGES = ["admin", "moderator", "guest"];
@@ -61,7 +52,7 @@ export default function RegisterPage({ user }) {
 
   if (user.privileges.admin) {
     return (
-      <StyledContentWrapper>
+      <main>
         <StyledForm onSubmit={handleRegister}>
           <input
             placeholder="Benutzername"
@@ -98,7 +89,7 @@ export default function RegisterPage({ user }) {
           <br />
           <button type="submit">Benutzer erstellen</button>
         </StyledForm>
-      </StyledContentWrapper>
+      </main>
     );
   }
   return (

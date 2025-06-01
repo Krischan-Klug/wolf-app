@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useRouter } from "next/router";
 
 // Animations
@@ -64,17 +64,17 @@ export default function Menu({ user }) {
   const [isClosing, setIsClosing] = useState(false);
   const router = useRouter();
 
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "/";
+  };
+
   const closeMenu = () => {
     setIsClosing(true);
     setTimeout(() => {
       setOpen(false);
       setIsClosing(false);
-    }, 300); // Match the duration of the animation
-  };
-
-  const navigate = (path) => {
-    closeMenu();
-    router.push(path);
+    }, 300);
   };
 
   return (
@@ -95,26 +95,46 @@ export default function Menu({ user }) {
             ✕
           </BurgerButton>
 
-          <StyledMenuButton onClick={() => navigate("/")}>
+          <StyledMenuButton
+            onClick={() => {
+              closeMenu();
+              router.push("/");
+            }}
+          >
             Home
           </StyledMenuButton>
-          <StyledMenuButton onClick={() => navigate("/")}>
+          <StyledMenuButton
+            onClick={() => {
+              closeMenu();
+              router.push("/attendance");
+            }}
+          >
             Anwesenheit
           </StyledMenuButton>
-          <StyledMenuButton onClick={() => navigate("/")}>
+          <StyledMenuButton
+            onClick={() => {
+              closeMenu();
+              router.push("/dashboard");
+            }}
+          >
             Dashboard
           </StyledMenuButton>
 
           {user?.privileges?.admin && (
             <StyledMenuButton
-              onClick={() => navigate("/admin")}
+              onClick={() => {
+                closeMenu();
+                router.push("/admin");
+              }}
               style={{ color: "red" }}
             >
               Admin
             </StyledMenuButton>
           )}
 
-          <StyledMenuButton onClick={closeMenu}>Logout</StyledMenuButton>
+          <StyledMenuButton onClick={() => handleLogout()}>
+            Logout
+          </StyledMenuButton>
         </Overlay>
       )}
     </>

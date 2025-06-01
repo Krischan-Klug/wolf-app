@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Menu from "./Menu";
+import { useRouter } from "next/router";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -19,9 +20,12 @@ const StyledHeaderIcons = styled.div`
 `;
 
 export default function Header({ user }) {
+  const router = useRouter();
   return (
     <StyledHeader>
-      <StyledHeaderIcons>Wolf</StyledHeaderIcons>
+      <StyledHeaderIcons onClick={() => router.push("/")}>
+        Wolf
+      </StyledHeaderIcons>
       <StyledHeaderIcons>
         <Menu user={user} />
       </StyledHeaderIcons>

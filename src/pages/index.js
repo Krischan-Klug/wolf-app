@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main>
       <p>Willkommen</p>
-      <AttendanceForm />
+      <p>Lorem ipsum</p>
     </main>
   );
 }
