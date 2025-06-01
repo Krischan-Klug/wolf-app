@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { privilegesShema } from "@/lib/structureShemas";
 
 const StyledForm = styled.form`
   display: flex;
@@ -14,11 +15,7 @@ export default function RegisterPage({ user }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
-  const [privileges, setPrivileges] = useState({
-    admin: false,
-    moderator: false,
-    guest: true,
-  });
+  const [privileges, setPrivileges] = useState({});
 
   function togglePrivilege(role) {
     setPrivileges((prev) => ({
@@ -69,7 +66,7 @@ export default function RegisterPage({ user }) {
           <br />
           <fieldset>
             <legend>Privilegien</legend>
-            {AVAILABLE_PRIVILEGES.map((role) => (
+            {privilegesShema.map((role) => (
               <label key={role} style={{ display: "block" }}>
                 <input
                   type="checkbox"
