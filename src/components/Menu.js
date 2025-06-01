@@ -29,7 +29,7 @@ const BurgerButton = styled.button`
   font-size: 1.5rem;
   padding: 0;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 900;
 `;
 
 const Overlay = styled.div`
@@ -79,11 +79,9 @@ export default function Menu({ user }) {
 
   return (
     <>
-      {!open && (
-        <BurgerButton onClick={() => setOpen(true)} aria-label="Open menu">
-          ☰
-        </BurgerButton>
-      )}
+      <BurgerButton onClick={() => setOpen(true)} aria-label="Open menu">
+        ☰
+      </BurgerButton>
 
       {open && (
         <Overlay isClosing={isClosing}>
