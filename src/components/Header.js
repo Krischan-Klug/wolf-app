@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Menu from "./Menu";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -17,11 +18,13 @@ const StyledHeaderIcons = styled.div`
   padding-right: 20px;
 `;
 
-export default function Header() {
+export default function Header({ user }) {
   return (
     <StyledHeader>
       <StyledHeaderIcons>Wolf</StyledHeaderIcons>
-      <StyledHeaderIcons>///</StyledHeaderIcons>
+      <StyledHeaderIcons>
+        <Menu user={user} />
+      </StyledHeaderIcons>
     </StyledHeader>
   );
 }

@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }) {
   if (user) {
     return (
       <>
-        <Header />
+        <Header user={user} />
         <Component {...pageProps} user={user} />
         <Footer />
       </>

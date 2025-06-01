@@ -1,16 +1,39 @@
+:root {
+  /* Light Theme (default) */
+  --color-bg: #f8f9fa;
+  --color-bg-light: #e9ecef;
+  --color-text: #212529;
+  --color-button: #e9ecef;
+  --color-button-hover: #dee2e6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #121212;
+    --color-bg-light: #808080;
+    --color-text: #f1f3f5;
+    --color-button: #2c2c2c;
+    --color-button-hover: #3a3a3a;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
   font-family: sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  min-height: 80vh;
   height: 80vh;
+  max-height: 80vh;
 }
 
 button {
@@ -18,38 +41,11 @@ button {
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
+  background-color: var(--color-button);
+  color: var(--color-text);
   transition: background-color 0.3s;
 }
 
-/* DARK LIGHT MODE */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #f1f3f5;
-  }
-
-  button {
-    background-color: #2c2c2c;
-    color: #f1f3f5;
-  }
-
-  button:hover {
-    background-color: #3a3a3a;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #f8f9fa;
-    color: #212529;
-  }
-
-  button {
-    background-color: #e9ecef;
-    color: #212529;
-  }
-
-  button:hover {
-    background-color: #dee2e6;
-  }
+button:hover {
+  background-color: var(--color-button-hover);
 }
