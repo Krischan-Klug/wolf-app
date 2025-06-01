@@ -26,7 +26,11 @@ export default function App({ Component, pageProps }) {
   }, [user]);
 
   if (!authenticated) {
-    return <div>Authentifizierung...</div>;
+    return (
+      <main>
+        <p>Authentifizierung...</p>;
+      </main>
+    );
   }
 
   if (user) {
